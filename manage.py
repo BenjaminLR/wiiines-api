@@ -11,11 +11,11 @@ app = create_app()
 migrate = Migrate(app, db)
 
 manager = Manager(app)
-manager.add_command('runserver', Server(port=5050))
+manager.add_command('runserver', Server(port=5555))
 manager.add_command('db', MigrateCommand)
 
 @manager.command
-def populate():
+def populatedb():
     with app.app_context():
         user1 = UserModel('one', 'one@example.com', 'azerty')
         user2 = UserModel('two', 'two@example.com', 'azerty')

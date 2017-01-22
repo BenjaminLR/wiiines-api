@@ -2,8 +2,6 @@ import os
 from flask import Flask
 from flask_restful import Api
 
-from models.user import UserModel
-from models.wine import WineModel
 from resources.user import UserList, User
 
 def create_app():
@@ -18,7 +16,3 @@ def create_app():
     api.add_resource(User, '/users/<int:user_id>')
 
     return app
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run(port=5050)
