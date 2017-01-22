@@ -24,3 +24,28 @@ class WineModel(db.Model):
             "description": self.description,
             "created": self.created_at.strftime("%d/%m/%y - %H:%M:%S")
         }
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        if kwargs['name']:
+            self.name = kwargs['name']
+
+        if kwargs['description']:
+            self.description = kwargs['description']
+
+        db.session.commit()
+
+    @classmethod
+    def find_by_id(cls, wine_id):
+        return cls.query.filter_by(id=wine_id).first()
+
+    @classmethod
+    def find_by_user(cls, user_id):
+        return cls.query.filter_by(user_id=user_id)

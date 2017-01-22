@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from db import db
+
 from models.user import UserModel
 
 
@@ -25,20 +25,22 @@ class User(Resource):
         if user:
             user.update(**data)
 
-        return user.json()
+            return user.json(), 200
+
+        return {"message": "User not found."}, 404
 
     def delete(self, user_id):
         user = UserModel.find_by_id(user_id)
 
-        if user:
-            try:
-                user.delete_from_db()
-            except:
-                return {"message": "An error occured deleting user."}, 500
+        if user is None:
+            return {"message": "User not found"}, 404
 
-            return {"message": "User deleted"}, 204
+        try:
+            user.delete_from_db()
+        except:
+            return {"message": "An error occured deleting user."}, 500
 
-        return {"message": "User not found"}, 404
+        return {"message": "User deleted"}, 200
 
 
 class UserList(Resource):
@@ -56,7 +58,8 @@ class UserList(Resource):
 
     def get(self):
         users = UserModel.query.all()
-        return {"users": [user.json() for user in users]}
+        
+        return {"users": [user.json() for user in users]}, 200
 
     def post(self):
         data = self.parser.parse_args()
