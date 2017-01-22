@@ -45,6 +45,7 @@ class UserModel(db.Model):
     def update(self, **kwargs):
         if kwargs['username']:
             self.username = kwargs['username']
+            
         if kwargs['email']:
             self.email = kwargs['email']
 
